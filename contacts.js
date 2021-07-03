@@ -1,53 +1,55 @@
 const fs = require("fs").promises;
 const path = require("path");
-// const { v4 } = require("uuid");
+const { v4 } = require("uuid");
 
-const contactsPath = path.join(__dirname, "contacts.json");
-
+const contactsPath = path.join(__dirname, "./db/contacts.json");
 
 async function listContacts() {
     try {
        const data = await fs.readFile(contactsPath);
         const contacts = JSON.parse(data);
-        console.log(contacts);
+        return contacts;
     }
     catch (error) {
-    //  error.message = "Cannot read contacts file";
-    //  console.log(error);
-     throw error;
+     error.message = "Cannot read contacts file";
     }
 };
 
-module.exports = listContacts;
-// async function getContactById(contactId) {
-//     try {
-//         const contacts = await listContacts();
-//         const findContacts = contacts.find(
-//             (item) => item.contactId === contactId);
-//         if (!findContacts) {
-//             throw new Error("ContactId incorrect");
-//         }
-//         return findContacts;
-//     } catch (error) {
-//         throw error;
-//     }
-// }
+async function getContactById(contactId) {
+  try {
+      const contacts = await listContacts();
+    const findContacts = contacts.find((item) => item.id === contactId);
+        if (!findContacts) {
+          throw new Error("Id incorrect");
+        }
+    return findContacts;
+  } catch (error) {
+  console.log(error.message);
+  }
+}
 
-// function removeContact(contactId) {
-//   // ...твой код
-// }
+async function removeContact(contactId) {
+  try {
+    const contacts = await listContacts();
+      const filterContact = contacts.filter(item => item.id !== contactId);
+      return filterContact;
+  } catch (error) {
+     console.log(error.message);
+  }
+}
 
-// async function addContact(obj) {
-//     const newContacts = { ...obj, id: v4(), name: "", email: "", phone:""};
-// }
+async function addContact({name, email, phone}) {
+  
+    const newContact = { id: v4(), name, email, phone };
+  
+    try {
+        const contacts = await listContacts();
+        const newContacts = [...contacts, newContact];
+        return newContacts;
+    } catch (error) {
+       console.log(error.message);
+    }
+}
 
+module.exports = { listContacts, getContactById, addContact, removeContact };
 
-// module.exports = getContactById;
-//   // removeContact,
-// module.exports = addContact;
-
-// module.exports = {
-//     listContacts,
-//     // getContactById,
-//     // addContact,
-// }
