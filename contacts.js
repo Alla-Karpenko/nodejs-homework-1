@@ -18,25 +18,25 @@ async function listContacts() {
 async function getContactById(contactId) {
   try {
       const contacts = await listContacts();
-    const findContacts = contacts.find((item) => item.id === contactId);
-        if (!findContacts) {
-          throw new Error("Id incorrect");
+    const findContacts = contacts.find((item) => item.id === Number(contactId));
+        if (findContacts) {
+          return [findContacts];
         }
-    return findContacts;
+      throw new Error("Id incorrect");
   } catch (error) {
   console.log(error.message);
   }
-}
+};
 
 async function removeContact(contactId) {
   try {
     const contacts = await listContacts();
-      const filterContact = contacts.filter(item => item.id !== contactId);
+    const filterContact = contacts.filter(item => item.id !== Number(contactId));
       return filterContact;
   } catch (error) {
      console.log(error.message);
   }
-}
+};
 
 async function addContact({name, email, phone}) {
   
@@ -49,7 +49,7 @@ async function addContact({name, email, phone}) {
     } catch (error) {
        console.log(error.message);
     }
-}
+};
 
 module.exports = { listContacts, getContactById, addContact, removeContact };
 
