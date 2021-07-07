@@ -2,29 +2,6 @@ const contacts = require("./contacts.js");
 const { Command } = require("commander");
 const program = new Command();
 
-// (async () => {
-//     try {
-//         const listContacts = await contacts.listContacts();
-        
-      
-
-//         const getContactById = await contacts.getContactById(9);
-       
-        
-
-//         
-       
-//         const resultNewContact = await contacts.addContact(newContacts);
-//          console.log(resultNewContact)
-                   
-  
-//         const removeContact = await contacts.removeContact(9)
-//         console.log(removeContact);
-
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// })()
 program
   .option("-a, --action <type>", "choose action")
   .option("-i, --id <type>", "user id")
